@@ -1,7 +1,7 @@
 def repeat(n):
-"""
-"декоратор с параметром"
-"""
+    """
+    декоратор с параметром
+    """
     def logging_decorator(genuine_function):
         def fake_function(arg):
             if n == 0:
