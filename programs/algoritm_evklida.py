@@ -11,12 +11,10 @@ def algoritm_Evklida(a, b):
     if a == b:
         return a
     while True:
-        if a > b and (a - b) > 0:
+        if a > b:
             a -= b
-        elif b > a and (b - a) > 0:
-            b -=a
-        elif a != b:
-            raise ValueError('Что-то явно пошло не так o_0')
+        elif b > a:
+            b -= a
         else:
             return a
 
