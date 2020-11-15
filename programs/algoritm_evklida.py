@@ -8,8 +8,6 @@ def decorator(genuine_function): #Почему бы и нет
 @decorator
 def algoritm_Evklida(a, b):
     a, b = abs(a), abs(b)
-    if a == b:
-        return a
     while True:
         if a > b:
             a -= b
