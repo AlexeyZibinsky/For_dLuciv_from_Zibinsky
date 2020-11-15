@@ -42,4 +42,4 @@ serpinskiy_step = 300 / iterations**2
 
 if __name__ == '__main__':
     printing(iterations, cabbage_step, transformation, cabbage_base_string, **cabbage_rule)
-    #printing(iterations, serpinskiy_step, transformation, serpinskiy_base_string, **serpinskiy_rule)
+    printing(iterations, serpinskiy_step, transformation, serpinskiy_base_string, **serpinskiy_rule)
