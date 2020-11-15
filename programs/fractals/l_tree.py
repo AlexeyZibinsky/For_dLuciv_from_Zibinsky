@@ -73,10 +73,10 @@ def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
             turtle.sety(stack.pop())
             turtle.pendown()
     turtle.update()
+    turtle.done()
 
 iterations = 10
 tree_step = 15
 
 if __name__ == '__main__':
-    printing(iterations, tree_step, transformation, tree_base_string, **tree_rule)
-            
+    printing(iterations, tree_step, transformation, tree_base_string, **tree_rule)           

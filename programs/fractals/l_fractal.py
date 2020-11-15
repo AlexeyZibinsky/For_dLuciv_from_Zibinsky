@@ -35,6 +35,7 @@ def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
         else: # F or G or some another symbol =)
             turtle.forward(step)
     turtle.update()
+    turtle.done()
 
 iterations = 7
 cabbage_step = 300 / 3**iterations
