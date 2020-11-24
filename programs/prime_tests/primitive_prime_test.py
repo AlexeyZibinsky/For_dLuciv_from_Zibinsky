@@ -1,5 +1,3 @@
-import time
-
 def primitive_prime_test(n):
     """
     Проверка числа на простоту (примитивная).

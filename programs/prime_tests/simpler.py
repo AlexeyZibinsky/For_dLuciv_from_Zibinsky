@@ -1,5 +1,4 @@
 import random
-import time
 
 f = open('PRIMES.txt', encoding = 'utf-8')
 
