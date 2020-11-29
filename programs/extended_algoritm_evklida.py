@@ -13,22 +13,21 @@ def decorator(genuine_function):
         return result
     return fake_function
 
-    
-@decorator  
+
+@decorator
 def extended_algoritm_Evklida(a, b):
     """
     Возвращает кортеж (k_1, k_2, gcd(a,b)), т.ч.:
     gcd(a, b) == k_1 * a + k_2 * b
     """
-    if a == 0 and b == 0: # Тривиальный случай
-        return (0, 0, 0) # Одно из представлений :)
+    if a == 0 and b == 0:  # Тривиальный случай
+        return (0, 0, 0)  # Одно из представлений :)
     if a == 0:
-        return (1, 0 ,b)
-    if b == 0: # (b == 0, a != 0) => (a ~ gcd)
-        return (1, 0, a) # a == 1*a + 0*b
-    x, y, gcd = extended_algoritm_Evklida(b, a%b)
+        return (1, 0, b)
+    if b == 0:  # (b == 0, a != 0) => (a ~ gcd)
+        return (1, 0, a)  # a == 1*a + 0*b
+    x, y, gcd = extended_algoritm_Evklida(b, a % b)
     return (y, x - (a // b) * y, gcd)
-
 
 
 if __name__ == '__main__':
@@ -36,4 +35,3 @@ if __name__ == '__main__':
                               int(input('введите второе число ')))
     # Для открытия мимо IDLE, мне ж этим ещё пользоваться:
     input('Закончить? ')
-    

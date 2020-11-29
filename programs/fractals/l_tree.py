@@ -8,16 +8,17 @@ import random
 их в вольной интерпретации и с добавлением рандома.
 """
 
-tree_rule = { '0': '1[-0]+0',
-              '1': '21',
-              '2': '2',
-              '[': '[',
-              ']': ']',
-              '-': '-',
-              '+': '+',
-              'angle': 25}
+tree_rule = {'0': '1[-0]+0',
+             '1': '21',
+             '2': '2',
+             '[': '[',
+             ']': ']',
+             '-': '-',
+             '+': '+',
+             'angle': 25}
 
 tree_base_string = '0'
+
 
 def transformation(base_string, **rule):
     temp = ''
@@ -25,9 +26,10 @@ def transformation(base_string, **rule):
         temp += rule[symbol]
     return temp
 
+
 def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
     for i in range(ITERATIONS):
-            base_string = TRANSFORMATION(base_string, **rule)
+        base_string = TRANSFORMATION(base_string, **rule)
     turtle.tracer(0, 0)
     turtle.penup()
     turtle.setx(0)
@@ -39,12 +41,14 @@ def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
     for ch in base_string:
         if ch == '1':
             turtle.forward(step)
-        elif ch == '2': # эта двойка - вообще колдовство чтобы было красиво
-            if random.randint(1,3) == 1: # поэтому рандом объяснить никак, так просто красивее :)
+        elif ch == '2':  # эта двойка - вообще колдовство чтобы было красиво
+            # поэтому рандом объяснить никак, так просто красивее :)
+            if random.randint(1, 3) == 1:
                 turtle.forward(step)
-        elif ch == '0': # 0 рисует последние отрезки, т.е. "листики"
+        elif ch == '0':  # 0 рисует последние отрезки, т.е. "листики"
             stack.append(turtle.pensize())
-            turtle.pensize(turtle.pensize() + 2) # "листики" должны быть потолще
+            # "листики" должны быть потолще
+            turtle.pensize(turtle.pensize() + 2)
             # Установим случайным образом какой-нибудь зелёный на листики
             if random.randint(1, 9) <= 3:
                 turtle.pencolor(0, 1, 0)
@@ -54,7 +58,7 @@ def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
                 turtle.pencolor(0, 0.5, 0)
             turtle.forward(step)
             turtle.pensize(stack.pop())
-            turtle.pencolor(0,0,0)
+            turtle.pencolor(0, 0, 0)
         elif ch == '-':
             turtle.left(rule['angle'] - random.randint(0, 10))
         elif ch == '+':
@@ -63,8 +67,9 @@ def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
             stack.append(turtle.ycor())
             stack.append(turtle.xcor())
             stack.append(turtle.heading())
-            turtle.pensize(0.825 * turtle.pensize()) # "веточки" становятся всё тоньше
-            stack.append(turtle.pensize())     
+            # "веточки" становятся всё тоньше
+            turtle.pensize(0.825 * turtle.pensize())
+            stack.append(turtle.pensize())
         elif ch == ']':
             turtle.penup()
             turtle.pensize(stack.pop())
@@ -75,8 +80,10 @@ def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
     turtle.update()
     turtle.done()
 
+
 iterations = 10
 tree_step = 15
 
 if __name__ == '__main__':
-    printing(iterations, tree_step, transformation, tree_base_string, **tree_rule)           
+    printing(iterations, tree_step, transformation,
+             tree_base_string, **tree_rule)

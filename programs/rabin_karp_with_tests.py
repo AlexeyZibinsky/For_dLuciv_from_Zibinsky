@@ -6,6 +6,7 @@
 
 import unittest
 
+
 def rabin_karp(text, pattern):
     """
     Поиск всех вхождений алгоритмом Рабина-Карпа
@@ -27,20 +28,21 @@ def rabin_karp(text, pattern):
         return result
 
     if pattern == "":
-        result = [ i for i in range(len(text)) ]
+        result = [i for i in range(len(text))]
         return result
-    
+
     pattern_sum = sum(ord(s) for s in pattern)
     current_sum = sum(ord(text[i]) for i in range(len(pattern)))
-    index = 0 #счётчик текущего индекса, с которого сравниваем паттерн
-    while True: #проходимся по тексту
+    index = 0  # счётчик текущего индекса, с которого сравниваем паттерн
+    while True:  # проходимся по тексту
         if current_sum == pattern_sum:
             proverka = True
-            #проверяем поэлементно
-            for i in range(len(pattern)-1): # -1 для маленькой оптимизации ######################
+            # проверяем поэлементно
+            # -1 для маленькой оптимизации ######################
+            for i in range(len(pattern)-1):
                 if pattern[i] != text[i + index]:
                     proverka = False
-            if proverka: #сохраняем индекс, если поэлементно сошлось
+            if proverka:  # сохраняем индекс, если поэлементно сошлось
                 result.append(index)
         if len(pattern) + index >= len(text):
             break
@@ -104,6 +106,7 @@ class RabinKarpTest(unittest.TestCase):
 # --------------
 # Ran ... tests in ...s
 # OK
+
 
 # Запуск тестов
 if __name__ == '__main__':

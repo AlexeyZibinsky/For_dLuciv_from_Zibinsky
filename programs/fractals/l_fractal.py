@@ -13,11 +13,13 @@ serpinskiy_rule = {'l': 'l',
                    'angle': 120}
 serpinskiy_base_string = 'FlGlG'
 
+
 def transformation(base_string, **rule):
     temp = ''
     for symbol in base_string:
         temp += rule[symbol]
     return temp
+
 
 def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
     for i in range(ITERATIONS):
@@ -32,10 +34,11 @@ def printing(ITERATIONS, step, TRANSFORMATION, base_string, **rule):
             turtle.left(rule['angle'])
         elif ch == 'r':
             turtle.right(rule['angle'])
-        else: # F or G or some another symbol =)
+        else:  # F or G or some another symbol =)
             turtle.forward(step)
     turtle.update()
     turtle.done()
+
 
 iterations = 7
 cabbage_step = 300 / 3**iterations
@@ -43,4 +46,5 @@ serpinskiy_step = 300 / iterations**2
 
 if __name__ == '__main__':
     #printing(iterations, cabbage_step, transformation, cabbage_base_string, **cabbage_rule)
-    printing(iterations, serpinskiy_step, transformation, serpinskiy_base_string, **serpinskiy_rule)
+    printing(iterations, serpinskiy_step, transformation,
+             serpinskiy_base_string, **serpinskiy_rule)
