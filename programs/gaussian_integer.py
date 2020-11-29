@@ -2,6 +2,7 @@
 Here I try to implement Gaussian integer
 """
 from numbers import Number
+import random
 
 
 class Gaussian_integer:
@@ -98,7 +99,7 @@ class Gaussian_integer:
     def __sub__(self, other):
         if not isinstance(other, Gaussian_integer):
             other = Gaussian_integer(other)
-        return self.__add__(other.ned())
+        return self.__add__(other.__neg__())
 
     def __rsub__(self, other):
         return self.__neg__().__add__(other)
@@ -170,7 +171,7 @@ class Gaussian_integer:
         elif isinstance(other, Gaussian_integer):
             return complex(self.coefficients[0], self.coefficients[1]) / complex(other.coefficients[0], other.coefficients[1])
         else:
-            return ValueError('Division is not available for u.')
+            return ValueError('Division is not available for this.')
 
     def __rtruediv__(self, other):
         if type(other) == complex:
@@ -189,35 +190,46 @@ class Gaussian_integer:
         elif isinstance(other, Gaussian_integer):
             return complex(other.coefficients[0], other.coefficients[1]) / complex(self.coefficients[0], self.coefficients[1])
         else:
-            return ValueError('Division is not available for u.')
+            return ValueError('Division is not available for this.')
 
     # Так как представление числа в виде неполного частного и остатка при делении с остатком
-    # в Целых Гауссовых не единственно, то вводить привычные __floordiv__ и __mod__ смысла мало.
-    # Я введу специфичное __floordiv__, а __mod__ вводить не буду.
+    # в Целых Гауссовых не единственно, то __floordiv__ и __mod__ будут возвращать лишь
+    # одно решение (зачастую кол-во решений доходит до четырёх).
+
+    def __divmod__(self, other):
+        if not isinstance(other, Gaussian_integer):
+            try:
+                other = Gaussian_integer(other)
+            except:
+                raise ValueError('Smth wrong with division')
+        temp = complex(self.coefficients[0], self.coefficients[1]) / complex(other.coefficients[0], other.coefficients[1])
+        quotient = Gaussian_integer((round(temp.real),round(temp.imag)))
+        remainder = self.__sub__(other.__mul__(quotient))
+        if remainder.norm() >= other.norm():
+            raise ValueError('Данную функцию следует отправить в утиль')
+        return (quotient, remainder)
 
     def __floordiv__(self, other):
-        """
-        Возвращает лишь одно из 4 ассоциированных частных
-        в случае, если деление без остатка. Если деление
-        без остатка невозможно, выдаёт строку с сообщением об этом.
-        """
-        if not isinstance(other, Gaussian_integer):
-            other = Gaussian_integer(other)
-        # Первым делом пользуемся свойством нормы
-        if self.norm() % other.norm() != 0:
-            return 'Не делятся :('
-        else:  # Делятся. Ищем частное:
-            # Найденное частное
-            return Gaussian_integer(self.__truediv__(other))
+        return divmod(self, other)[0]
 
-    def __rfloordiv__(self, other):
+    def __rfloordivmod__(self, other):
         if not isinstance(other, Gaussian_integer):
-            other = Gaussian_integer(other)
-        if other.norm() % self.norm() != 0:
-            return 'Не делятся :('
-        else:  # Делятся. Ищем частное:
-            # Найденное частное
-            return Gaussian_integer(other.__truediv__(self))
+            try:
+                other = Gaussian_integer(other)
+            except:
+                raise ValueError('Smth wrong with division')
+        return divmod(other, self)[0]
+
+    def __mod__(self, other):
+        return divmod(self, other)[1]
+
+    def __rmod__(self, other):
+        if not isinstance(other, Gaussian_integer):
+            try:
+                other = Gaussian_integer(other)
+            except:
+                raise ValueError('Smth wrong with division')
+        return divmod(other, self)[1]
 
     def associate(self):
         """
@@ -227,37 +239,6 @@ class Gaussian_integer:
                 self.__mul__(complex(0, 1)),
                 self.__mul__(complex(-1, 0)),
                 self.__mul__(complex(0, -1))]
-
-    def div_possibility(self, other):
-        """
-        Если нам не хочется целочисленным делением получать
-        то число, то строку, необходимо создать функцию,
-        которая определяет, возможно ли деление нацело, чтобы
-        можно было сначала применять её, и в случае, когда деле-
-        ние возможно, делить! И получать числа!
-        """
-        if isinstance(other, Gaussian_integer):
-            return self.norm() % other.norm() == 0
-        elif type(other) == int:
-            other = Gaussian_integer(other)
-            return self.norm() % other.norm() == 0
-        elif type(other) == tuple:
-            if len(other) == 1 and type(other[0]) == int:
-                other = Gaussian_integer(other[0])
-                return self.norm() % other.norm() == 0
-            elif len(other) == 2 and type(other[0]) == int and type(other[1]) == int:
-                other = Gaussian_integer((other[0], other[1]))
-                return self.norm() % other.norm() == 0
-            else:
-                return False
-        elif type(other) == complex:
-            if other.real == int(other.real) / 1 and other.imag == int(other.imag) / 1:
-                other = Gaussian_integer(other)
-                return self.norm() % other.norm() == 0
-            else:
-                return False
-        else:
-            return False
 
     def is_prime(self):
         """
@@ -289,7 +270,34 @@ class Gaussian_integer:
             else:
                 return False
 
+    def gcd(self, other):
+        """
+        Использует алгоритм Евклида для Нахождения наибольшего общего делителя
+        и его линейного представления
+        """
+        if not isinstance(other, Gaussian_integer):
+            try:
+                other = Gaussian_integer(other)
+            except:
+                raise ValueError('Smth wrong with division')
+        def extended_algoritm_evklida(a, b):
+            if a == 0 and b == 0:  # Тривиальный случай
+                return (0, 0, 0)  # Одно из представлений :)
+            if a == 0:
+                return (1, 0, b)
+            if b == 0:  # (b == 0, a != 0) => (a ~ gcd)
+                return (1, 0, a)  # a == 1*a + 0*b
+            x, y, greatest_common_divisor = extended_algoritm_evklida(b, a % b)
+            return (y, x - (a // b) * y, greatest_common_divisor)
+        return extended_algoritm_evklida(self, other)
+
 
 if __name__ == '__main__':
     # a place to experiment!
+    a = Gaussian_integer((random.randint(1, 1000), random.randint(1, 1000)))
+    b = Gaussian_integer((random.randint(1, 10), random.randint(1, 10)))
+    print( 'a =', a, '   ', 'b =', b)
+    print( a.gcd(b) )
+    print( Gaussian_integer.gcd(a,b)[2] )
+    print( Gaussian_integer.gcd(a,b)[2], ' = (', Gaussian_integer.gcd(a,b)[0], ') * (', a, ') + (', Gaussian_integer.gcd(a,b)[1], ') * (', b, ')' ) # Алгоритм Евклида работает
     pass
