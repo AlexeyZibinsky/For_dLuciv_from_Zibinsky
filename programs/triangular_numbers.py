@@ -10,11 +10,8 @@ class triangular_number_small:
     """ 
     def __init__(self, arg):
         self.content = [ i*(i + 1) // 2 for i in range(arg + 1) ]
-        #print('AAA', self.content[6])
-        
 
     def __list__(self):
-       print('bbb', self.content)
        return self.content
 
     def __len__(self):
@@ -68,8 +65,8 @@ class triangular_number_large:
     def __init__(self, arg = 0):
         self.dlina = arg
 
-    #def __list__(self):
-        #raise ValueError('This method is not available in the class "triangular_number_large" ')
+    def __list__(self):
+        raise ValueError('This method is not available in the class "triangular_number_large" ')
 
     def __len__(self):
         return self.dlina
@@ -108,7 +105,6 @@ window.title('Nils plays football')
 window['bg'] = 'pink'
 a = 800
 b = a * 1.6180339887
-print(a * 1.6180339887)
 window.geometry(str(int(b)) + 'x' + str(a))
 
 lbl1 = tkinter.Label( window, text = 'Hello!', font = ( 'Arial Bold', 30 ), width = 20, bg = 'pink', fg = 'green4' )
