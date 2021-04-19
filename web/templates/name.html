@@ -1,0 +1,11 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<p>Дмитрий Вадимович, здравствуйте. Введите, пожалуйста, два натуральных числа через запятую чтобы узнать их НОД. Результат отобразится в поле ввода!</p>
+
+<form action="/name" method="POST">
+  <input type="text" value="{{name}}" name="name" />
+  <input type="submit" value="Узнать НОД">
+</form>
+{% endblock %}
